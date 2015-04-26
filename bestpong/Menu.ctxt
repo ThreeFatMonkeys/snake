@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Menu()
+comment1.params=reset
+comment1.target=Menu(boolean)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ control()
+comment4.params=
+comment4.target=void\ mouseControl()
+comment5.params=
+comment5.target=void\ redraw()
+comment6.params=menuPos
+comment6.target=void\ selection(int)
+comment7.params=
+comment7.target=void\ behavior()
+numComments=8

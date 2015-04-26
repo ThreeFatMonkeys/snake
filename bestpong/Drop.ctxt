@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Drop()
+comment1.params=splatter\ width\ height
+comment1.target=Drop(boolean,\ int,\ int)
+comment2.params=
+comment2.target=void\ death()
+numComments=3
