@@ -1,45 +1,93 @@
 import greenfoot.*;
+import java.awt.*;
 
-public class Snake extends Actor
+public class Snake extends GridBasedMovement
 {
-    int moveTimer;
+    int size, moveTimer, length;
     
-    public Snake()
+    int i = 0;
+    
+    static Snake lastBump;
+    
+    Snake parent;
+    
+    // TODO ; ADD TO CONSTRUCTOR ALLOWING FOR "SNAKE" TO FORM
+    
+    public Snake(int cellSize)
+    {
+        size = cellSize;
+    }
+    
+    public Snake(Snake parent)
+    {
+        this.parent = parent;
+        this.x = parent.oldX;
+        this.y = parent.oldY;
+        this.size = parent.size;
+    }
+    
+    public void addedToWorld(World currentWorld)
+    {
+       lastBump = this;
+       setup();
+    }
+    
+    public void setup()
     {
         moveTimer = 0;
+        this.x = getX();
+        this.y = getY();
+        oldX = x;
+        oldY = y;
+        GreenfootImage snake = new GreenfootImage(size, size);
+        snake.setColor(Color.BLUE);
+        snake.fill();
+        setImage(snake);
     }
     
-    public void act() 
-    {
-        movement();
-        moveTimer++;
-    }
-    
-    public void movement()
+    public void keyListener()
     {
         if(moveTimer > 10)
         {
             if(Greenfoot.isKeyDown("up"))
             {
-                setRotation(270);
-                move(1);
+              Move(true, -1);
             }
             if(Greenfoot.isKeyDown("down"))
             {
-                setRotation(90);
-                move(1);
+                Move(true, 1);
             }
             if(Greenfoot.isKeyDown("right"))
             {
-                setRotation(0);
-                move(1);
+                Move(false, 1);
             }
             if(Greenfoot.isKeyDown("left"))
             {
-                setRotation(180);
-                move(1);
+               Move(false, -1);
             }
             moveTimer = 0;
+        }
+        
+    }
+    
+    public void getBigger()
+    {
+        getWorld().addObject(new Snake(this), Snake.lastBump.getX(), Snake.lastBump.getY());
+    }
+    // dir = boolean for direction
+    // True = y axis
+    // false = x axis
+    public void Move(boolean dir, int amount)
+    {
+        if(dir)
+        {
+            oldY = getY();
+            setLocation(x, y+amount);
+        }
+        else
+        {
+            oldX = getX();
+            setLocation(x+amount, y);
         }
     }
 }
