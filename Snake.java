@@ -5,17 +5,21 @@ public class Snake extends Actor
     int moveTimer;
     GreenfootImage image;
     
-    boolean isHead;
-    Snake ahead;
+    boolean isHead, hasChild;
+    Snake parent, child;
     int prevX, prevY;
     
     public Snake()
     {
         moveTimer = 0;
         image = new GreenfootImage(25, 25);
+        image.setColor(java.awt.Color.RED);
         image.fill();
         setImage(image);
         isHead = true;
+        hasChild = false;
+        prevX = 0;
+        prevY = 0;
     }
     
     public Snake(Snake follow)
@@ -25,12 +29,15 @@ public class Snake extends Actor
         image.fill();
         setImage(image);
         isHead = false;
-        ahead = follow;
+        parent = follow;
+        hasChild = false;
+        prevX = 0;
+        prevY = 0;
     }
     
     public void act() 
     {
-        switch(getRotation())
+        /*switch(getRotation())
         {
         case 270:
             prevX = getX();
@@ -50,7 +57,7 @@ public class Snake extends Actor
             break;
         default:
             break;
-        }
+        }*/
         movement();
         if(isHead)
         {
@@ -81,26 +88,40 @@ public class Snake extends Actor
                 {
                     setRotation(180);
                 }
+                prevX = getX();
+                prevY = getY();
                 move(1);
                 moveTimer = 0;
             }
         }
         else
         {
-            setLocation(ahead.prevX, ahead.prevY);
+            prevX = getX();
+            prevY = getY();
+            setLocation(parent.prevX, parent.prevY);
         }
+
     }
     
     public void eat()
     {
         if(getOneIntersectingObject(Food.class) != null)
         {
-            grow();
+            if(hasChild)
+            {
+                child.grow();
+            }
+            else
+            {
+                grow();
+            }
         }
     }
     
     public void grow()
     {
-        getWorld().addObject(new Snake(this), prevX, prevY);
+        child = new Snake(this);
+        getWorld().addObject(child, prevX, prevY);
+        hasChild = true;
     }
 }
