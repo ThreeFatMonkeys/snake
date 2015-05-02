@@ -3,7 +3,6 @@ import greenfoot.*;
 public class Head extends Snake
 {
     int moveTimer, oldDirection;
-    boolean gameOver;
     
     public Head(int length, int size)
     {
@@ -13,7 +12,6 @@ public class Head extends Snake
         image.setColor(java.awt.Color.RED);
         image.fill();
         setImage(image);
-        gameOver = false;
         
         oldDirection = 0;
     }
@@ -46,6 +44,7 @@ public class Head extends Snake
     
     public void movement()
     {
+        Game world = (Game) getWorld();
         moveTimer++;
         if(moveTimer > 10)
         {
@@ -83,7 +82,7 @@ public class Head extends Snake
              // BODY COLLISION
              if(getOneObjectAtOffset(0, 0, Snake.class) != null)
              {
-                 gameOver = true;
+                 world.gameOver = true;
              }
         }
     }
