@@ -1,93 +1,106 @@
 import greenfoot.*;
-import java.awt.*;
 
-public class Snake extends GridBasedMovement
+public class Snake extends Actor
 {
-    int size, moveTimer, length;
+    int moveTimer;
+    GreenfootImage image;
     
-    int i = 0;
+    boolean isHead;
+    Snake ahead;
+    int prevX, prevY;
     
-    static Snake lastBump;
-    
-    Snake parent;
-    
-    // TODO ; ADD TO CONSTRUCTOR ALLOWING FOR "SNAKE" TO FORM
-    
-    public Snake(int cellSize)
-    {
-        size = cellSize;
-    }
-    
-    public Snake(Snake parent)
-    {
-        this.parent = parent;
-        this.x = parent.oldX;
-        this.y = parent.oldY;
-        this.size = parent.size;
-    }
-    
-    public void addedToWorld(World currentWorld)
-    {
-       lastBump = this;
-       setup();
-    }
-    
-    public void setup()
+    public Snake()
     {
         moveTimer = 0;
-        this.x = getX();
-        this.y = getY();
-        oldX = x;
-        oldY = y;
-        GreenfootImage snake = new GreenfootImage(size, size);
-        snake.setColor(Color.BLUE);
-        snake.fill();
-        setImage(snake);
+        image = new GreenfootImage(25, 25);
+        image.fill();
+        setImage(image);
+        isHead = true;
     }
     
-    public void keyListener()
+    public Snake(Snake follow)
     {
-        if(moveTimer > 10)
+        moveTimer = 0;
+        image = new GreenfootImage(25, 25);
+        image.fill();
+        setImage(image);
+        isHead = false;
+        ahead = follow;
+    }
+    
+    public void act() 
+    {
+        switch(getRotation())
         {
-            if(Greenfoot.isKeyDown("up"))
-            {
-              Move(true, -1);
-            }
-            if(Greenfoot.isKeyDown("down"))
-            {
-                Move(true, 1);
-            }
-            if(Greenfoot.isKeyDown("right"))
-            {
-                Move(false, 1);
-            }
-            if(Greenfoot.isKeyDown("left"))
-            {
-               Move(false, -1);
-            }
-            moveTimer = 0;
+        case 270:
+            prevX = getX();
+            prevY = getY() + 1;
+            break;
+        case 90:
+            prevX = getX();
+            prevY = getY() - 1;
+            break;
+        case 0:
+            prevX = getX() - 1;
+            prevY = getY();
+            break;
+        case 180:
+            prevX = getX() + 1;
+            prevY = getY();
+            break;
+        default:
+            break;
         }
-        
+        movement();
+        if(isHead)
+        {
+            eat();
+            moveTimer++;
+        }
     }
     
-    public void getBigger()
+    public void movement()
     {
-        getWorld().addObject(new Snake(this), Snake.lastBump.getX(), Snake.lastBump.getY());
-    }
-    // dir = boolean for direction
-    // True = y axis
-    // false = x axis
-    public void Move(boolean dir, int amount)
-    {
-        if(dir)
+        if(isHead)
         {
-            oldY = getY();
-            setLocation(x, y+amount);
+            if(moveTimer > 10)
+            {
+                if(Greenfoot.isKeyDown("up"))
+                {
+                    setRotation(270);
+                }
+                if(Greenfoot.isKeyDown("down"))
+                {
+                    setRotation(90);
+                }
+                if(Greenfoot.isKeyDown("right"))
+                {
+                    setRotation(0);
+                }
+                if(Greenfoot.isKeyDown("left"))
+                {
+                    setRotation(180);
+                }
+                move(1);
+                moveTimer = 0;
+            }
         }
         else
         {
-            oldX = getX();
-            setLocation(x+amount, y);
+            setLocation(ahead.prevX, ahead.prevY);
         }
+    }
+    
+    public void eat()
+    {
+        if(getOneIntersectingObject(Food.class) != null)
+        {
+            grow();
+        }
+    }
+    
+    public void grow()
+    {
+        getWorld().addObject(new Snake(this), prevX, prevY);
     }
 }
