@@ -1,13 +1,11 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class Food extends Actor
+public class Food extends GameObject
 {
-    public void act() 
+    public Food(int size)
     {
-        if(getOneIntersectingObject(Snake.class) != null)
-        {
-            getWorld().addObject(new Food(), Greenfoot.getRandomNumber(25), Greenfoot.getRandomNumber(25));
-            getWorld().removeObject(this);
-        }
-    }    
+        image = new GreenfootImage("apple1.png");
+        image.scale(size, size);
+        setImage(image);
+    }
 }

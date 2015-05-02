@@ -1,127 +1,26 @@
-import greenfoot.*;
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class Snake extends Actor
+public class Snake extends GameObject
 {
-    int moveTimer;
-    GreenfootImage image;
+    int length;
     
-    boolean isHead, hasChild;
-    Snake parent, child;
-    int prevX, prevY;
-    
-    public Snake()
+    public Snake(int length, int size)
     {
-        moveTimer = 0;
-        image = new GreenfootImage(25, 25);
-        image.setColor(java.awt.Color.RED);
+        this.length = length;
+        this.size = size;
+        
+        image = new GreenfootImage(size, size);
+        image.setColor(java.awt.Color.BLACK);
         image.fill();
         setImage(image);
-        isHead = true;
-        hasChild = false;
-        prevX = 0;
-        prevY = 0;
     }
     
-    public Snake(Snake follow)
+    public void reduce()
     {
-        moveTimer = 0;
-        image = new GreenfootImage(25, 25);
-        image.fill();
-        setImage(image);
-        isHead = false;
-        parent = follow;
-        hasChild = false;
-        prevX = 0;
-        prevY = 0;
-    }
-    
-    public void act() 
-    {
-        /*switch(getRotation())
+        length--;
+        if(length < 1)
         {
-        case 270:
-            prevX = getX();
-            prevY = getY() + 1;
-            break;
-        case 90:
-            prevX = getX();
-            prevY = getY() - 1;
-            break;
-        case 0:
-            prevX = getX() - 1;
-            prevY = getY();
-            break;
-        case 180:
-            prevX = getX() + 1;
-            prevY = getY();
-            break;
-        default:
-            break;
-        }*/
-        movement();
-        if(isHead)
-        {
-            eat();
-            moveTimer++;
+            getWorld().removeObject(this);
         }
-    }
-    
-    public void movement()
-    {
-        if(isHead)
-        {
-            if(moveTimer > 10)
-            {
-                if(Greenfoot.isKeyDown("up"))
-                {
-                    setRotation(270);
-                }
-                if(Greenfoot.isKeyDown("down"))
-                {
-                    setRotation(90);
-                }
-                if(Greenfoot.isKeyDown("right"))
-                {
-                    setRotation(0);
-                }
-                if(Greenfoot.isKeyDown("left"))
-                {
-                    setRotation(180);
-                }
-                prevX = getX();
-                prevY = getY();
-                move(1);
-                moveTimer = 0;
-            }
-        }
-        else
-        {
-            prevX = getX();
-            prevY = getY();
-            setLocation(parent.prevX, parent.prevY);
-        }
-
-    }
-    
-    public void eat()
-    {
-        if(getOneIntersectingObject(Food.class) != null)
-        {
-            if(hasChild)
-            {
-                child.grow();
-            }
-            else
-            {
-                grow();
-            }
-        }
-    }
-    
-    public void grow()
-    {
-        child = new Snake(this);
-        getWorld().addObject(child, prevX, prevY);
-        hasChild = true;
     }
 }
