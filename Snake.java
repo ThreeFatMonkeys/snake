@@ -30,14 +30,33 @@ public class Snake extends Actor
     
     public void act() 
     {
+        switch(getRotation())
+        {
+        case 270:
+            prevX = getX();
+            prevY = getY() + 1;
+            break;
+        case 90:
+            prevX = getX();
+            prevY = getY() - 1;
+            break;
+        case 0:
+            prevX = getX() - 1;
+            prevY = getY();
+            break;
+        case 180:
+            prevX = getX() + 1;
+            prevY = getY();
+            break;
+        default:
+            break;
+        }
         movement();
         if(isHead)
         {
             eat();
             moveTimer++;
         }
-        prevX = getX();
-        prevY = getY();
     }
     
     public void movement()
@@ -66,10 +85,10 @@ public class Snake extends Actor
                 moveTimer = 0;
             }
         }
-        /*else
+        else
         {
             setLocation(ahead.prevX, ahead.prevY);
-        }*/
+        }
     }
     
     public void eat()
