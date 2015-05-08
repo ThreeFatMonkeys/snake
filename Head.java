@@ -4,6 +4,10 @@ public class Head extends Snake
 {
     int moveTimer, oldDirection;
     
+    Game world;
+    
+    GreenfootImage deadImage;
+    
     public Head(int length, int size)
     {
         super(length, size);
@@ -13,13 +17,25 @@ public class Head extends Snake
         image.fill();
         setImage(image);
         
+        deadImage = new GreenfootImage(image);
+        deadImage.setColor(java.awt.Color.RED.darker().darker());
+        deadImage.fill();
+        
         oldDirection = 0;
     }
     
     public void act() 
     {
-        control();
-        movement();
+        world = (Game) getWorld();
+        if(!world.gameOver)
+        {
+            control();
+            movement();
+        }
+        else
+        {
+            setImage(deadImage);
+        }
     }
     
     public void control()
@@ -44,46 +60,78 @@ public class Head extends Snake
     
     public void movement()
     {
-        Game world = (Game) getWorld();
         moveTimer++;
         if(moveTimer > 10)
         {
              // GROWING
              
              getWorld().addObject(new Snake(length, size), getX(), getY());
-            
-             // WALL COLLISION
              
-             // MOVING
-             move(1);
+             // SETTING OLD DIRECTION
              oldDirection = getRotation();
-             moveTimer = 0;
              
-             // EATING
-             
-             Food apple = (Food) getOneObjectAtOffset(0, 0, Food.class);
-             
-             if(apple != null)
+             // WALL COLLISION
+             switch(oldDirection)
              {
-                 getWorld().removeObject(apple);
-                 length++;
+                 case 0 : 
+                    if(getX() > world.getWidth() - 2)
+                    {
+                        world.fail("Went off Right Side");
+                    }
+                    break;
+                 case 90 : 
+                    if(getY() > world.getHeight() - 2)
+                    {
+                        world.fail("Went out the bottom");
+                    }
+                    break;
+                 case 180 : 
+                    if(getX() < 1)
+                    {
+                        world.fail("Went off Left Side");
+                    }
+                    break;
+                 case 270 : 
+                    if(getY() < 1)
+                    {
+                        world.fail("Went too high");
+                    }
+                    break;
              }
-             else
+             
+             if(!world.gameOver)
              {
-                 // REDUCE
+             
+                 // MOVING
+                 move(1);
+                 moveTimer = 0;
                  
-                 for(Object i : getWorld().getObjects(Snake.class))
+                 // EATING
+                 
+                 Food apple = (Food) getOneObjectAtOffset(0, 0, Food.class);
+                 
+                 if(apple != null)
                  {
-                     Snake j = (Snake) i;
-                     j.reduce();
+                     getWorld().removeObject(apple);
+                     length++;
                  }
-             }
-             
-             // BODY COLLISION
-             if(getOneObjectAtOffset(0, 0, Snake.class) != null)
-             {
-                 world.gameOver = true;
-             }
+                 else
+                 {
+                     // REDUCE
+                     
+                     for(Object i : getWorld().getObjects(Snake.class))
+                     {
+                         Snake j = (Snake) i;
+                         j.reduce();
+                     }
+                 }
+                 
+                 // BODY COLLISION
+                 if(getOneObjectAtOffset(0, 0, Snake.class) != null)
+                 {
+                     world.fail("Hit your own body.");
+                 }
+            }
         }
     }
     

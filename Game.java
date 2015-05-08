@@ -19,10 +19,11 @@ public class Game extends World
         {
             addObject(new Food(25), Greenfoot.getRandomNumber(25), Greenfoot.getRandomNumber(25));
         }
-        
-        if(gameOver)
-        {
-            Greenfoot.stop();
-        }
+    }
+    
+    public void fail(String why)
+    {
+        gameOver = true;
+        addObject(new Text(why), getWidth()/2, getHeight()/2);
     }
 }
