@@ -9,7 +9,7 @@ public class Game extends World
     {    
         super(25, 25, 25);
         gameOver = false;
-        setPaintOrder(Head.class);
+        setPaintOrder(GameOverText.class, Snake.class, ScoreText.class);
         addObject(new Head(1, 25), 12, 12);
         addObject(new Food(25), Greenfoot.getRandomNumber(25), Greenfoot.getRandomNumber(25));
         drawScore();
@@ -33,7 +33,7 @@ public class Game extends World
     public void fail(String why)
     {
         gameOver = true;
-        removeObjects(getObjects(GameObject.class));
+        //removeObjects(getObjects(GameObject.class));
         addObject(new GameOverText(why), getWidth()/2, getHeight()/2);
     }
 }
