@@ -76,25 +76,25 @@ public class Head extends Snake
                  case 0 : 
                     if(getX() > world.getWidth() - 2)
                     {
-                        world.fail("Went off Right Side");
+                        world.fail("GAME OVER\nYou hit the right wall");
                     }
                     break;
                  case 90 : 
                     if(getY() > world.getHeight() - 2)
                     {
-                        world.fail("Went out the bottom");
+                        world.fail("GAME OVER\nYou hit the bottom wall");
                     }
                     break;
                  case 180 : 
                     if(getX() < 1)
                     {
-                        world.fail("Went off Left Side");
+                        world.fail("GAME OVER\nYou hit the left wall");
                     }
                     break;
                  case 270 : 
                     if(getY() < 1)
                     {
-                        world.fail("Went too high");
+                        world.fail("GAME OVER\nYou hit the top wall");
                     }
                     break;
              }
@@ -112,7 +112,9 @@ public class Head extends Snake
                  
                  if(apple != null)
                  {
-                     getWorld().removeObject(apple);
+                     world = (Game) getWorld();
+                     world.removeObject(apple);
+                     world.score++;
                      length++;
                  }
                  else
@@ -129,7 +131,7 @@ public class Head extends Snake
                  // BODY COLLISION
                  if(getOneObjectAtOffset(0, 0, Snake.class) != null)
                  {
-                     world.fail("Hit your own body.");
+                     world.fail("GAME OVER\nYou ate your own body");
                  }
             }
         }
