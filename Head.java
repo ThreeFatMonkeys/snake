@@ -12,7 +12,7 @@ public class Head extends Snake
     {
         super(length, size);
         moveTimer = 0;
-        image = new GreenfootImage(25, 25);
+        image = new GreenfootImage(Game.gridSize, Game.gridSize);
         image.setColor(java.awt.Color.RED);
         image.fill();
         setImage(image);
@@ -61,7 +61,7 @@ public class Head extends Snake
     public void movement()
     {
         moveTimer++;
-        if(moveTimer > 10)
+        if(moveTimer > 101 - Game.speed)
         {
              // GROWING
              

@@ -8,13 +8,17 @@ public class Game extends World
 {
     static Font scratchFont, vgaFont;
     
+    static int speed;
+    static int gridSize;
+    static int gridWidth, gridHeight;
+    
     int score;
     
     boolean gameOver;
     
     public Game()
     {    
-        super(25, 25, 25);
+        super(gridWidth, gridHeight, gridSize);
         gameOver = false;
         setPaintOrder(GameOverText.class, Snake.class, ScoreText.class);
     }
@@ -42,6 +46,11 @@ public class Game extends World
                 scratchFont = new Font(Font.SERIF, Font.PLAIN, 50);
                 vgaFont = new Font(Font.SERIF, Font.PLAIN, 50);
             }
+            
+            speed = 94;
+            gridSize = 25;
+            gridWidth = 25;
+            gridHeight = 25;
         }
     }
     
@@ -49,7 +58,7 @@ public class Game extends World
     {
         if(getObjects(Food.class).isEmpty() && !gameOver)
         {
-            addObject(new Food(25), Greenfoot.getRandomNumber(25), Greenfoot.getRandomNumber(25));
+            addObject(new Food(gridSize), Greenfoot.getRandomNumber(gridWidth), Greenfoot.getRandomNumber(gridHeight));
         }
         drawScore();
     }
