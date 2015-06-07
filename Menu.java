@@ -24,6 +24,13 @@ public class Menu extends Game
         redraw();
     }
     
+    public void setup(int numMenuPos)
+    {
+        this.numMenuPos = numMenuPos;
+        titleFont = scratchFont.deriveFont(200f);
+        menuFont = vgaFont.deriveFont(50f);
+    }
+    
     public void act()
     {
         behavior();

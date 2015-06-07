@@ -7,22 +7,15 @@ public class Title extends Menu
     public Title()
     {
         super(true);
-        setup();
+        setup(3);
         redraw();
     }
     
     public Title(boolean load)
     {
         super(load);
-        setup();
+        setup(3);
         redraw();
-    }
-    
-    public void setup()
-    {
-        numMenuPos = 3;
-        titleFont = scratchFont.deriveFont(200f);
-        menuFont = vgaFont.deriveFont(50f);
     }
     
     public void selection(int menuPos)
@@ -31,13 +24,16 @@ public class Title extends Menu
         switch(menuPos)
         {
         case 0:
+            // GAME
             Greenfoot.setWorld(new Level());
             break;
         case 1:
             // SETTINGS
+            Greenfoot.setWorld(new Settings());
             break;
         case 2:
             // CREDITS
+            Greenfoot.setWorld(new Credits());
             break;
         }
     }
@@ -80,7 +76,7 @@ public class Title extends Menu
     public void redraw()
     {
         background = new GreenfootImage(getWidth(), getHeight());
-        background.setColor(Color.WHITE);
+        background.setColor(Color.GRAY.darker().darker());
         background.fill();
         
         
