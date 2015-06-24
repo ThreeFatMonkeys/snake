@@ -23,4 +23,9 @@ public class Snake extends GameObject
             getWorld().removeObject(this);
         }
     }
+    
+    public void grow(int x)
+    {
+        length += x;
+    }
 }

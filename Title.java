@@ -76,7 +76,7 @@ public class Title extends Menu
     public void redraw()
     {
         background = new GreenfootImage(getWidth(), getHeight());
-        background.setColor(Color.GRAY.darker().darker());
+        background.setColor(Color.GRAY);
         background.fill();
         
         
@@ -108,20 +108,20 @@ public class Title extends Menu
         switch(menuPos)
         {
             case 0 : 
-            background.drawString("Play", 217, 303);
+            background.drawString("Play", 197, 303);
             break;
             case 1 :
-            background.drawString("Settings", 147, 383);
+            background.drawString("Settings", 137, 383);
             break;
             case 2 :
-            background.drawString("Credits", 167, 463);
+            background.drawString("Credits", 157, 463);
             break;
         }
         
         background.setColor(Color.YELLOW.darker());
-        background.drawString("Play", 220, 300);
-        background.drawString("Settings", 150, 380);
-        background.drawString("Credits", 170, 460);
+        background.drawString("Play", 200, 300);
+        background.drawString("Settings", 140, 380);
+        background.drawString("Credits", 160, 460);
         
         
         setBackground(background);

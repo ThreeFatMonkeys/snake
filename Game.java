@@ -11,6 +11,7 @@ public class Game extends World
     static int speed;
     static int gridSize;
     static int gridWidth, gridHeight;
+    static int increase;
     
     int score;
     
@@ -51,16 +52,18 @@ public class Game extends World
             gridSize = 25;
             gridWidth = 25;
             gridHeight = 25;
+            increase = 10;
         }
     }
     
     public void act()
     {
-        if(getObjects(Food.class).isEmpty() && !gameOver)
-        {
-            addObject(new Food(gridSize), Greenfoot.getRandomNumber(gridWidth), Greenfoot.getRandomNumber(gridHeight));
-        }
-        drawScore();
+       if(getObjects(Food.class).isEmpty() && !gameOver)
+       {
+           spawn();
+       }
+       
+       drawScore();
     }
     
     public void drawScore()
@@ -74,5 +77,41 @@ public class Game extends World
         gameOver = true;
         //removeObjects(getObjects(GameObject.class));
         addObject(new GameOverText(why), getWidth()/2, getHeight()/2);
+    }
+    
+    public void spawn()
+    {
+        if(canSpawn())
+        {
+            int x, y;
+            boolean spawned = false;
+            do
+            {
+                x = Greenfoot.getRandomNumber(gridWidth);
+                y = Greenfoot.getRandomNumber(gridHeight);
+                
+                if(getObjectsAt(x, y, GameObject.class).isEmpty())
+                {
+                    addObject(new Food(gridSize), x, y);
+                    spawned = true;
+                }
+            }while(!spawned);
+        }
+    }
+    
+    public boolean canSpawn()
+    {
+        for(int x = 0; x < gridWidth; x++)
+        {
+            for(int y = 0; y < gridHeight; y++)
+            {
+                if(getObjectsAt(x, y, GameObject.class).isEmpty())
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 }

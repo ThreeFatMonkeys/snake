@@ -35,6 +35,11 @@ public class Head extends Snake
         else
         {
             setImage(deadImage);
+            moveTimer++;
+            if(moveTimer > 100)
+            {
+                Greenfoot.setWorld(new Title(false));
+            }
         }
     }
     
@@ -115,17 +120,18 @@ public class Head extends Snake
                      world = (Game) getWorld();
                      world.removeObject(apple);
                      world.score++;
-                     length++;
-                 }
-                 else
-                 {
-                     // REDUCE
                      
                      for(Object i : getWorld().getObjects(Snake.class))
                      {
                          Snake j = (Snake) i;
-                         j.reduce();
+                         j.grow(Game.increase);
                      }
+                 }
+                 
+                 for(Object i : getWorld().getObjects(Snake.class))
+                 {
+                     Snake j = (Snake) i;
+                     j.reduce();
                  }
                  
                  // BODY COLLISION
